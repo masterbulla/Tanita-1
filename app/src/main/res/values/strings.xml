@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Tanita</string>
+    <string name="action_settings">Settings</string>
+    <string name="weight">Weight</string>
+    <string name="bmi">BMI</string>
+    <string name="bmiImg">BMI-img</string>
+    <string name="weightImg">WeightImg</string>
+    <string name="fatImg">FatImg</string>
+    <string name="waterImg">WaterImg</string>
+    <string name="viscelarImg">ViscelarImg</string>
+    <string name="boneImg">BoneImg</string>
+    <string name="muscleImg">MuscleImg</string>
+    <string name="ageImg">AgeImg</string>
+    <string name="bmrImg">BmrImg</string>
+    <string name="ratingImg">RatingImg</string>
+    <string name="fatStr">Fat</string>
+    <string name="waterStr">Water</string>
+    <string name="viscelarStr">ViscelarFat</string>
+    <string name="boneStr">Bone</string>
+    <string name="muscleStr">Muscle Mass</string>
+    <string name="ageStr">Age</string>
+    <string name="bmrStr">BMR</string>
+    <string name="ratingStr">Rating</string>
+    <string name="dateImg">Date</string>
+    <string name="dateString">Date</string>
+</resources>
