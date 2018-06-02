@@ -11,70 +11,73 @@ import java.util.ArrayList;
 
 public class XmlWriter {
 
-    private String topTag = "TanitaData";
-    private String weightDataTag = "WeightData";
-    private String weightTag = "Weight";
-    private String bmiTag = "Bmi";
-    private String fatTag = "Fat";
-    private String waterTag = "Water";
-    private String muscleTag = "Muscle";
-    private String ratingTag = "Rating";
-    private String restTag = "Rest";
-    private String ageTag = "Age";
-    private String boneTag = "Bone";
-    private String visceralTag = "Visceral";
-
     public void writeXml(ArrayList<WeightData> weightDatas, String xmlFile) throws IOException {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer2 = new StringWriter();
         serializer.setOutput(writer2);
         serializer.startDocument("UTF-8", true);
+        String topTag = "TanitaData";
         serializer.startTag("", topTag);
         for (WeightData wd:weightDatas){
+            String weightDataTag = "WeightData";
             serializer.startTag("", weightDataTag);
-            serializer.attribute("", "Date", wd.getDate());
 
+            String dateTag = "Date";
+            serializer.startTag("", dateTag);
+            serializer.text(String.valueOf(wd.getDate()));
+            serializer.endTag("", dateTag);
+
+            String weightTag = "Weight";
             serializer.startTag("", weightTag);
             serializer.text(String.valueOf(wd.getWeight()));
             serializer.endTag("", weightTag);
 
+            String bmiTag = "Bmi";
             serializer.startTag("", bmiTag);
             serializer.text(String.valueOf(wd.getBmi()));
             serializer.endTag("", bmiTag);
 
+            String fatTag = "Fat";
             serializer.startTag("", fatTag);
             serializer.text(String.valueOf(wd.getFat()));
             serializer.endTag("", fatTag);
 
+            String waterTag = "Water";
             serializer.startTag("", waterTag);
             serializer.text(String.valueOf(wd.getWater()));
             serializer.endTag("", waterTag);
 
+            String muscleTag = "Muscle";
             serializer.startTag("", muscleTag);
             serializer.text(String.valueOf(wd.getMuscle()));
             serializer.endTag("", muscleTag);
 
+            String ratingTag = "Rating";
             serializer.startTag("", ratingTag);
             serializer.text(String.valueOf(wd.getRating()));
             serializer.endTag("", ratingTag);
 
+            String restTag = "Rest";
             serializer.startTag("", restTag);
             serializer.text(String.valueOf(wd.getRest()));
             serializer.endTag("", restTag);
 
+            String ageTag = "Age";
             serializer.startTag("", ageTag);
             serializer.text(String.valueOf(wd.getAge()));
             serializer.endTag("", ageTag);
 
+            String boneTag = "Bone";
             serializer.startTag("", boneTag);
             serializer.text(String.valueOf(wd.getBone()));
             serializer.endTag("", boneTag);
 
+            String visceralTag = "Visceral";
             serializer.startTag("", visceralTag);
             serializer.text(String.valueOf(wd.getVisceral()));
             serializer.endTag("", visceralTag);
 
-            serializer.endTag("",weightDataTag);
+            serializer.endTag("", weightDataTag);
         }
         serializer.endTag("", topTag);
         serializer.endDocument();
