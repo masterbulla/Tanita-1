@@ -32,7 +32,7 @@ public class XmlWriter {
         serializer.startTag("", topTag);
         for (WeightData wd:weightDatas){
             serializer.startTag("", weightDataTag);
-            serializer.attribute(weightDataTag, "Date", wd.getDate());
+            serializer.attribute("", "Date", wd.getDate());
 
             serializer.startTag("", weightTag);
             serializer.text(String.valueOf(wd.getWeight()));
