@@ -2,6 +2,7 @@ package sh.karda.tanita;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -21,18 +24,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     EditText bmi;
     WeightData weightData;
-    WeightData previousWeightData;
     FileHelper fileHelper;
     ArrayList<WeightData> weightDataArrayList;
     Calendar myCalendar;
     EditText dateText;
     Date defaultDate;
     DatePickerDialog.OnDateSetListener date;
+    XmlReader xmlReader;
+
 
     private String getBmi(){
         if (bmi != null)
@@ -122,18 +128,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         fileHelper = new FileHelper();
 
         weightData = new WeightData();
-        try {
-            previousWeightData = fileHelper.getLastResults("Debug");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        weightData.setDate(new Date());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         String xmlFileToRead = fileHelper.getFile("Debug").toString().replace(".txt",".xml");
 
-        XmlReader xmlReader = new XmlReader();
+        xmlReader = new XmlReader();
         weightDataArrayList = xmlReader.getWeightData(xmlFileToRead);
 
         fab = findViewById(R.id.fab);
@@ -160,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 fab.setVisibility(View.GONE);
             }
         });
+
+        //Date
         myCalendar = Calendar.getInstance();
 
         date = new DatePickerDialog.OnDateSetListener() {
@@ -174,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         dateText = findViewById(R.id.editDate);
         defaultDate = new Date();
-        Format formatter = new SimpleDateFormat("MM-dd");
+        Format formatter = new SimpleDateFormat("MM-dd", Locale.getDefault());
         String s = formatter.format(defaultDate);
         dateText.setText(s);
-        weightData.setDate(defaultDate.toString());
+        weightData.setDate(defaultDate);
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this, MainActivity.this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
@@ -188,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 datePickerDialog.show();
             }
         });
-
+        // End Date
 
 
         bmi = findViewById(R.id.editBmi);
@@ -293,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     private void updateLabel() {
         String myFormat = "MM-dd"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
 
         dateText.setText(sdf.format(myCalendar.getTime()));
     }
@@ -325,7 +330,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            if (weightDataArrayList == null){
+                String xmlFileToRead = fileHelper.getFile("Debug").toString().replace(".txt",".xml");
+                weightDataArrayList = xmlReader.getWeightData(xmlFileToRead);
+            }
+            Intent showMenu = new Intent(MainActivity.this, DataViewer.class);
+            //showMenu.putExtra("DATA", weightDataArrayList);
+            startActivity(showMenu);
         }
 
         return super.onOptionsItemSelected(item);
@@ -333,9 +344,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar newDate = Calendar.getInstance();
         String dateString = String.format("%02d", month+1) + "-" + String.format("%02d", dayOfMonth);
         dateText.setText(dateString);
-        weightData.setDate(newDate.toString());
+        weightData.setDate(new GregorianCalendar(year, month, dayOfMonth).getTime());
     }
 }

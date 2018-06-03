@@ -37,6 +37,7 @@ public class XmlReader {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element2 = (Element) node;
                     WeightData weightData = new WeightData();
+                    weightData.setDateFromString(getValue("Date", element2));
                     weightData.setWeight(Double.parseDouble(getValue("Weight",element2)));
                     weightData.setBmi(Double.parseDouble(getValue("Bmi",element2)));
                     weightData.setFat(Double.parseDouble(getValue("Fat",element2)));

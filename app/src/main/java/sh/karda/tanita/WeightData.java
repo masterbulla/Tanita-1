@@ -1,8 +1,11 @@
 package sh.karda.tanita;
 
+import java.text.DateFormat;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class WeightData {
     public double getWeight() {
@@ -122,30 +125,37 @@ public class WeightData {
 
     }
 
-    double Weight;
-    double Bmi;
-    double fat;
-    double Water;
-    double Muscle;
-    int rating;
-    int rest;
-    int age;
-    double bone;
-    int visceral;
+    private double Weight;
+    private double Bmi;
+    private double fat;
+    private double Water;
+    private double Muscle;
+    private int rating;
+    private int rest;
+    private int age;
+    private double bone;
+    private int visceral;
 
     public String getDate() {
         Date d = new Date();
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String s = formatter.format(d);
         if (date == null) return s;
-        return date;
+        s = formatter.format(date);
+        return s;
     }
 
-    public void setDate(String date) {
+    public String getDateString(){
+        if (this.date == null) this.date = new Date();
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return formatter.format(date);
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    String date;
+    Date date;
 
 
     public boolean isComplete() {
@@ -158,8 +168,19 @@ public class WeightData {
         int g = getAge();
         double h = getBone();
         int i = getVisceral();
-        if ((getWeight() >0) && getBmi() >0 && getFat()>0&&getWater()>0&&getMuscle()>0&&getRating()>0&&getRest()>0&&getAge()>0&&
-                getBone()>0&& getVisceral()>0) return true;
-        return false;
+        return (getWeight() > 0) && getBmi() > 0 && getFat() > 0 && getWater() > 0 && getMuscle() > 0 && getRating() > 0 && getRest() > 0 && getAge() > 0 &&
+                getBone() > 0 && getVisceral() > 0;
+    }
+
+    public void setDateFromString(String dateString) {
+        //2018-06-03 11:40:14
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = null;
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException e) {
+            this.date = new Date();
+        }
+        this.date = date;
     }
 }
